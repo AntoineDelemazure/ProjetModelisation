@@ -15,9 +15,8 @@ public:
 	};
 	~Sommet(){};
 
-	void ajouterArete(Arete* a){ /*On considere le graphe comme connexe, les 
-								 aretes inexistantes seront instancié à NULL.
-								 Les arêtes DOIVENT  donc être ajouté dans l'ordre*/
+	//Ici, un vestige d'une autre version. Je le garde pour le plaisir.
+	void ajouterArete(Arete* a){
 		aretes.push_back(a);
 	};
 

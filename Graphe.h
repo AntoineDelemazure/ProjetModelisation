@@ -85,7 +85,8 @@ public:
 				it->setPoids(0);
 			}
 			else{
-				it->setPoids(20000000); //max de int en c++ 2147483647
+				it->setPoids(20000000); 
+				//la valeur max de int en c++ (2147483647) fait planter le calcul (sans fausser le resultat) donc...
 			}
 		}
 		bool changement = true;
@@ -120,30 +121,3 @@ private:
 	vector<Arete*> aretes;
 	vector<Sommet*> sommets;
 };
-/*
-for (int j = 1; j < sommets.size(); j++){
-	//cout << "lol1" << endl;
-	changement = true;
-	for (auto ite : sommets){
-		//cout << "lol2" << endl;
-		if (changement){
-			changement = false;
-			if (ite->getPoids() == j - 1){
-				for (auto iter : sommets){
-					//cout << "lol3" << endl;
-					for (auto itera : iter->getAretes()){
-						//cout << "lol4" << endl;
-						iter->setPoids(iter->getPoids() + itera->getPoids());
-						//cout << "lol5" << endl;
-						if (iter->getPoids() < itera->getPoids()){
-							cout << iter->getName();
-							sommets.at(iter->getName() - 1)->setPoids(iter->getPoids());
-							changement = true;
-						}
-					}
-				}
-			}
-		}
-	}
-}
-cout << "PCC : " << sortie << endl;*/
