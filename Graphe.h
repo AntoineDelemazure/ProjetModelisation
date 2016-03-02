@@ -30,7 +30,7 @@ public:
 		for (auto s:g.getSommets())
 		{
 			o << "Sommet " << s->getName() << endl 
-				<< "poids : " << s->getPoids() << "\n" << endl
+				<< "poids : " << s->getPoids() << "\n"
 				<< "NouveauPoids : " << s->getNouveauPoids() << "\n" << endl;
 			o << "Aretes de ce sommet : " << endl;
 		}
@@ -73,19 +73,23 @@ public:
 			i++;
 		}
 		for (int j = 1; j < sommets.size(); j++){
+			cout << "lol1" << endl;
 			changement = true;
 			for (auto ite : sommets){
+				cout << "lol2" << endl;
 				if (changement){
 					changement = false;
 					if (ite->getNouveauPoids() == j - 1){
 						for (auto iter : sommets){
+							cout << "lol3" << endl;
 							for (auto itera : iter->getAretes()){
-								iter->setNouveauPoids(iter->getPoids() + itera->getPoids());
-								if (iter->getNouveauPoids() < itera->getPoids()){
+								cout << "lol4" << endl;
+								//iter->setNouveauPoids(iter->getPoids() + itera->getPoids());
+								/*if (iter->getNouveauPoids() < itera->getPoids()){
 									sortie += iter->getName();
 									sommets.at(iter->getName())->setPoids(iter->getPoids());
 									changement = true;
-								}
+								}*/
 							}
 						}
 					}
