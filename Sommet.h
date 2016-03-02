@@ -11,7 +11,7 @@ public:
 		name = n;
 		poids = 0;
 		vector<Arete*> aretes;
-
+		predecesseur = n;
 	};
 	~Sommet(){};
 
@@ -40,10 +40,13 @@ public:
 	void setNouveauPoids(int i){
 		nouveauPoids = i;
 	}
+	void setPredecesseur(int i){ predecesseur = i; }
+	int getPredecesseur(){ return predecesseur; }
 
 private:
 	int name;
 	int poids;
 	int nouveauPoids;
 	vector<Arete*> aretes;
+	int predecesseur;
 };

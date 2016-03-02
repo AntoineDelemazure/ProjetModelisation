@@ -95,7 +95,7 @@ int main(){
 	g.ajouterArete(&a2to1);
 	cout << g;
 
-	g.FordBellman2(1);
+	g.FordBellman2(3);
 
 	cout << g;
 

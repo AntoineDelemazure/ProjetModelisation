@@ -27,35 +27,25 @@ public:
 	vector<Sommet*> getSommets(){
 		return sommets;
 	}
+	vector<Arete*> getAretes(){
+		return aretes;
+	}
 
 	//Une fonction bien tarabiscoté pour afficher le graphe
 	friend ostream& operator << (ostream& o, Graphe& g){
 		o << "Graphe :\n" << endl;
-		for (auto s:g.getSommets())
+		o << "Sommets :" << endl;
+		for (auto s : g.getSommets())
 		{
-			o << "Sommet " << s->getName() << endl 
-				<< "poids : " << s->getPoids() << "\n"
-				<< "NouveauPoids : " << s->getNouveauPoids() << "\n" << endl;
-			o << "Aretes de ce sommet : " << endl;
+			o << "Sommet " << s->getName()
+				<< "; poids : " << s->getPoids() << endl;
 		}
-		o << endl;
-		o << "{";
-		for each (Sommet* s in g.getSommets())
+		o << endl << "Aretes :"<< endl;
+		for (auto a : g.getAretes())
 		{
-			if (s->getAretes().empty())
-				Exception("Liste d'arete vide", true);
-			else {
-				for each (Arete* a in s->getAretes())
-				{
-					if (!a->exist())
-						o << " - ;";
-					else
-						o << " " << a->getPoids() << " ;";
-					}
-				}
-			o << endl;
-			}
-		o << "}";
+			o << a->getOrigine() << " vers " << a->getFin()
+				<< "; poids : " << a->getPoids() << endl;
+		}
 		o << endl;
 		return o;
 	}
@@ -69,10 +59,10 @@ public:
 		{
 			if (source == i){
 				it->setPoids(0);
-				it->setNouveauPoids(0);
+				it->setPoids(0);
 			}else{
 				it->setPoids(-1);
-				it->setNouveauPoids(2147483647);
+				it->setPoids(2147483647);
 			}
 			i++;
 		}
@@ -89,37 +79,41 @@ public:
 	}
 
 	void FordBellman2(int source){
-		int i = 1;
-		bool changement;
-		string sortie;
 		for (auto it : sommets)
 		{
-			if (source == i){
+			if (source == it->getName()){
 				it->setPoids(0);
-				it->setNouveauPoids(0);
 			}
 			else{
-				it->setPoids(-1);
-				it->setNouveauPoids(2147483647); //max de int en c++
+				it->setPoids(20000000); //max de int en c++ 2147483647
 			}
-			i++;
 		}
+		bool changement = true;
 		for (int i = 1; i < sommets.size(); i++)
 		{
-			for (auto j : aretes){
-				if (sommets.at(j->getFin()-1)->getNouveauPoids() > (sommets.at(j->getOrigine()-1)->getNouveauPoids() + j->getPoids())){
-					sommets.at(j->getFin()-1)->setNouveauPoids((sommets.at(j->getOrigine()-1)->getNouveauPoids() + j->getPoids()));
+			if (changement){
+				changement = false;
+				for (auto j : aretes){
+					if (sommets.at(j->getFin() - 1)->getPoids() >(sommets.at(j->getOrigine() - 1)->getPoids() + j->getPoids())){
+						sommets.at(j->getFin() - 1)->setPoids((sommets.at(j->getOrigine() - 1)->getPoids() + j->getPoids()));
+						sommets.at(j->getFin() - 1)->setPredecesseur(sommets.at(j->getOrigine() - 1)->getName());
+						changement = true;
+					}
 				}
 			}
 		}
 		for (auto k : aretes){
-			if (sommets.at(k->getFin()-1)->getNouveauPoids() > (sommets.at(k->getOrigine()-1)->getNouveauPoids() + k->getPoids())){
+			if (sommets.at(k->getFin()-1)->getPoids() > (sommets.at(k->getOrigine()-1)->getPoids() + k->getPoids())){
 				cout << "Cycle de poid négatif";
 			}
-			else{
 
-			}
 		}
+		cout << "PCC :" << endl;
+		for (auto s : sommets){
+			cout << "Predecesseur du sommet " << s->getName() << " : " << s->getPredecesseur() 
+				<< ". Poids du chemin parcouru depuis la source : " << s->getPoids() << endl;
+		}
+		cout << endl;
 	}
 
 private:
@@ -134,14 +128,14 @@ for (int j = 1; j < sommets.size(); j++){
 		//cout << "lol2" << endl;
 		if (changement){
 			changement = false;
-			if (ite->getNouveauPoids() == j - 1){
+			if (ite->getPoids() == j - 1){
 				for (auto iter : sommets){
 					//cout << "lol3" << endl;
 					for (auto itera : iter->getAretes()){
 						//cout << "lol4" << endl;
-						iter->setNouveauPoids(iter->getPoids() + itera->getPoids());
+						iter->setPoids(iter->getPoids() + itera->getPoids());
 						//cout << "lol5" << endl;
-						if (iter->getNouveauPoids() < itera->getPoids()){
+						if (iter->getPoids() < itera->getPoids()){
 							cout << iter->getName();
 							sommets.at(iter->getName() - 1)->setPoids(iter->getPoids());
 							changement = true;
