@@ -76,8 +76,8 @@ public:
 	Le résultat s'afiche sur la console de la facon suivante:
 	Chaque sommet est listé indiquant sont prédécesseur dans l'arbre du plus court chemin,
 	dont la racine est la source.
-	Il indique également le poids du chemin jusqu'à lui
-	Reconstituer */
+	Il indique également le poids du chemin jusqu'à lui.
+	Reconstituer le chemin le plus court depuis un sommet peut être fait en remontant la chaine des prédécesseurs*/
 	void FordBellman(int source){
 		//Initialisation
 		for (auto it : sommets)
@@ -97,7 +97,7 @@ public:
 			if (changement){
 				changement = false;
 				for (auto j : aretes){
-					if (sommets.at(j->getFin() - 1)->getPoids() >(sommets.at(j->getOrigine() - 1)->getPoids() + j->getPoids())){
+					if (sommets.at(j->getFin() - 1)->getPoids() > (sommets.at(j->getOrigine() - 1)->getPoids() + j->getPoids())){
 						sommets.at(j->getFin() - 1)->setPoids((sommets.at(j->getOrigine() - 1)->getPoids() + j->getPoids()));
 						sommets.at(j->getFin() - 1)->setPredecesseur(sommets.at(j->getOrigine() - 1)->getName());
 						changement = true;

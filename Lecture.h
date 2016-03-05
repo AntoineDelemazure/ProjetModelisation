@@ -57,7 +57,7 @@ void ConstruireGraphe(Graphe *g, std::ifstream& f){
 					//cout << a << endl;
 					//Arete a(stoi(tokens.at(3)), stoi(tokens.at(1)), stoi(tokens.at(2)));
 					//cout << a;
-					g->ajouterArete(j, stoi(tokens.at(1).c_str() + 1), stoi(tokens.at(2).c_str() + 1));//g->ajouterArete(stoi(tokens.at(3)), stoi(tokens.at(1)), stoi(tokens.at(2)));
+					g->ajouterArete(stoi(tokens.at(3)), stoi(tokens.at(1).c_str() + 1), stoi(tokens.at(2).c_str() + 1));//g->ajouterArete(stoi(tokens.at(3)), stoi(tokens.at(1)), stoi(tokens.at(2)));
 					//cout << endl;
 				}
 

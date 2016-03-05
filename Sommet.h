@@ -34,9 +34,7 @@ public:
 	void setPoids(int p){
 		poids = p;
 	}
-	void setNouveauPoids(int i){
-		nouveauPoids = i;
-	}
+
 	void setPredecesseur(int i){ predecesseur = i; }
 	int getPredecesseur(){ return predecesseur; }
 
