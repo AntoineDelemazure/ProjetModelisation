@@ -8,9 +8,10 @@ class Arete
 {
 public:
 	//J'aime pas trop cette façon de faire mais tant pis, je suis trop malade pour etre intelligent.
-	Arete(int p, bool e){
+	Arete(int p, int o, int f){
 		poids = p;
-		existence = e;
+		origine = o;
+		fin = f;
 	};
 
 	~Arete(){};
@@ -27,10 +28,13 @@ public:
 	int setPoids(int i){
 		poids = i;
 	}
-	bool exist(){
-		return existence;
-	}
+	int getOrigine(){ return origine; }
+	int getFin(){ return fin;}
+	void setOrigine(int o){ origine = o; }
+	void setFin(int f){ fin = f; }
+
 private:
 	int poids; 
-	bool existence;
+	int origine;
+	int fin;
 };

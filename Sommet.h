@@ -11,13 +11,12 @@ public:
 		name = n;
 		poids = 0;
 		vector<Arete*> aretes;
-
+		predecesseur = n;
 	};
 	~Sommet(){};
 
-	void ajouterArete(Arete* a){ /*On considere le graphe comme connexe, les 
-								 aretes inexistantes seront instancié à NULL.
-								 Les arêtes DOIVENT  donc être ajouté dans l'ordre*/
+	//Ici, un vestige d'une autre version. Je le garde pour le plaisir.
+	void ajouterArete(Arete* a){
 		aretes.push_back(a);
 	};
 
@@ -40,10 +39,13 @@ public:
 	void setNouveauPoids(int i){
 		nouveauPoids = i;
 	}
+	void setPredecesseur(int i){ predecesseur = i; }
+	int getPredecesseur(){ return predecesseur; }
 
 private:
 	int name;
 	int poids;
 	int nouveauPoids;
 	vector<Arete*> aretes;
+	int predecesseur;
 };
