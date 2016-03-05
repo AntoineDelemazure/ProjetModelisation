@@ -7,18 +7,17 @@
 class Sommet
 {
 public:
+	//Constructeur
 	Sommet(int n){
 		name = n;
 		poids = 0;
-		vector<Arete*> aretes;
 		predecesseur = n;
 	}
 
-	//Ici, un vestige d'une autre version. Je le garde pour le plaisir.
-	void ajouterArete(Arete* a){
-		aretes.push_back(a);
-	}
+	//avant, ici, y avait un vestige de code que je voulais garder, mais finalement
+	//j'ai du l'écraser
 
+	//La fonction d'impression
 	friend ostream& operator << (ostream& o, Sommet& s){
 		o << "Sommet " << s.name
 			<< "; poids : " << s.poids << endl;
@@ -34,12 +33,6 @@ public:
 	};
 	void setPoids(int p){
 		poids = p;
-	};
-	vector<Arete*> getAretes(){
-		return aretes;
-	};
-	int getNouveauPoids(){
-		return nouveauPoids;
 	}
 	void setNouveauPoids(int i){
 		nouveauPoids = i;
@@ -48,9 +41,7 @@ public:
 	int getPredecesseur(){ return predecesseur; }
 
 private:
-	int name;
-	int poids;
-	int nouveauPoids;
-	vector<Arete*> aretes;
-	int predecesseur;
+	int name; // le nom. Permet de récuperer facilement un sommet
+	int poids; // le poids, la "distance" entre ce sommet et la source
+	int predecesseur; // le prédecesseur dans le plus court chemin depuis la source.
 };

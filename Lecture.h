@@ -54,11 +54,10 @@ void ConstruireGraphe(Graphe *g, std::ifstream& f){
 					copy(istream_iterator<string>(iss),
 						istream_iterator<string>(),
 						back_inserter(tokens));
-					int j = stoi(tokens.at(3));
 					//cout << a << endl;
 					//Arete a(stoi(tokens.at(3)), stoi(tokens.at(1)), stoi(tokens.at(2)));
 					//cout << a;
-					g->ajouterArete(stoi(tokens.at(3)), stoi(tokens.at(1)), stoi(tokens.at(2)));
+					g->ajouterArete(j, stoi(tokens.at(1).c_str() + 1), stoi(tokens.at(2).c_str() + 1));//g->ajouterArete(stoi(tokens.at(3)), stoi(tokens.at(1)), stoi(tokens.at(2)));
 					//cout << endl;
 				}
 
@@ -69,7 +68,7 @@ void ConstruireGraphe(Graphe *g, std::ifstream& f){
 					copy(istream_iterator<string>(iss),
 						istream_iterator<string>(),
 						back_inserter(tokens));
-					Sommet s(stoi(tokens.at(0)));
+					Sommet s(atoi(tokens.at(0).c_str() + 1));//Sommet s(stoi(tokens.at(0)));
 					g->ajouterSommet(&s);
 				}
 
