@@ -24,11 +24,27 @@ public:
 		aretes.push_back(a);
 	}
 
+	void ajouterArete(int p, int o, int f){
+		Arete a(p, o, f);
+		aretes.push_back(&a);
+	}
+
 	vector<Sommet*> getSommets(){
 		return sommets;
 	}
 	vector<Arete*> getAretes(){
 		return aretes;
+	}
+
+	vector<Sommet*> getSuccesseur(int i){
+		vector<Sommet*> listSucc;
+		for (auto a : aretes){
+			if (a->getOrigine() == i)
+			{
+				listSucc.push_back(sommets.at(a->getFin()-1));
+			}
+		}
+		return listSucc;
 	}
 
 	//Une fonction bien tarabiscoté pour afficher le graphe
@@ -37,48 +53,20 @@ public:
 		o << "Sommets :" << endl;
 		for (auto s : g.getSommets())
 		{
-			o << "Sommet " << s->getName()
-				<< "; poids : " << s->getPoids() << endl;
+			o << *s;
 		}
 		o << endl << "Aretes :"<< endl;
 		for (auto a : g.getAretes())
 		{
-			o << a->getOrigine() << " vers " << a->getFin()
-				<< "; poids : " << a->getPoids() << endl;
+			o << *a;
 		}
 		o << endl;
 		return o;
 	}
 	
-	void FordBellman(int source){
-		vector<Sommet*>::iterator it;
-		int i = 1;
-		bool changement;
-		string sortie;
-		for (auto it:sommets)
-		{
-			if (source == i){
-				it->setPoids(0);
-				it->setPoids(0);
-			}else{
-				it->setPoids(-1);
-				it->setPoids(2147483647);
-			}
-			i++;
-		}
-		for (int i = 1; i < sommets.size(); i++)
-		{
-			for (auto j : sommets){
-				for (auto k : j->getAretes()){
-					if (k->exist()){
-						
-					}
-				}
-			}
-		}
-	}
 
-	void FordBellman2(int source){
+	void FordBellman(int source){
+		//Initialisation
 		for (auto it : sommets)
 		{
 			if (source == it->getName()){
@@ -89,6 +77,7 @@ public:
 				//la valeur max de int en c++ (2147483647) fait planter le calcul (sans fausser le resultat) donc...
 			}
 		}
+		//Relaxation
 		bool changement = true;
 		for (int i = 1; i < sommets.size(); i++)
 		{
@@ -103,6 +92,7 @@ public:
 				}
 			}
 		}
+		//Check cycle poid négatif
 		for (auto k : aretes){
 			if (sommets.at(k->getFin()-1)->getPoids() > (sommets.at(k->getOrigine()-1)->getPoids() + k->getPoids())){
 				cout << "Cycle de poid négatif";
@@ -116,6 +106,7 @@ public:
 		}
 		cout << endl;
 	}
+
 
 private:
 	vector<Arete*> aretes;

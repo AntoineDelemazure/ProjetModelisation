@@ -1,9 +1,12 @@
 #pragma once
 #include "stdlib.h"
 #include <iostream>
+#include <string> 
+#include <fstream> 
 #include "Arete.h"
 #include "Sommet.h"
 #include "Graphe.h"
+#include "Lecture.h"
 
 
 using namespace std;
@@ -56,12 +59,18 @@ int main(){
 	g.ajouterArete(&a2to1);
 	cout << g;
 
-	g.FordBellman2(3);
+	Graphe g2;
+	std::ifstream fichier("D:/Neo-Fufu/Mes documents/Boulot/Modelisation/Projet2016/data_VRPTW_10_3_2_4.gpr");
+	ConstruireGraphe(&g2, fichier);
 
-	cout << g;
+	//g.FordBellman2(3);
+
+	cout << g2;
 
 
-	cout << "Jusqu'ici tout va bien" << endl;
+
+
+	cout << endl << "Jusqu'ici tout va bien" << endl;
 	system("pause");
 	return 0;
 }

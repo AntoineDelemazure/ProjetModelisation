@@ -12,13 +12,18 @@ public:
 		poids = 0;
 		vector<Arete*> aretes;
 		predecesseur = n;
-	};
-	~Sommet(){};
+	}
 
 	//Ici, un vestige d'une autre version. Je le garde pour le plaisir.
 	void ajouterArete(Arete* a){
 		aretes.push_back(a);
-	};
+	}
+
+	friend ostream& operator << (ostream& o, Sommet& s){
+		o << "Sommet " << s.name
+			<< "; poids : " << s.poids << endl;
+		return o;
+	}
 
 	// === GET SET ===
 	int getName(){

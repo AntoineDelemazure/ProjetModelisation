@@ -7,7 +7,6 @@ using namespace std;
 class Arete
 {
 public:
-	//J'aime pas trop cette façon de faire mais tant pis, je suis trop malade pour etre intelligent.
 	Arete(int p, int o, int f){
 		poids = p;
 		origine = o;
@@ -17,7 +16,8 @@ public:
 	~Arete(){};
 
 	friend ostream& operator << (ostream& o, Arete& a){
-		o << "Poids : " << a.poids << endl;
+
+		o <<"De " << a.origine << " vers "<< a.fin << " Poids : " << a.poids << endl;
 		return o;
 	}
 	
