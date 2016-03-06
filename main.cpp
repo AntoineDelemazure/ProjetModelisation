@@ -33,7 +33,7 @@ int main(){
 	g.ajouterArete(&a2to3);
 	g.ajouterArete(&a3to1);
 	*/
-
+	//lol
 	Sommet s1(1);
 	Sommet s2(2);
 	Sommet s3(3);
