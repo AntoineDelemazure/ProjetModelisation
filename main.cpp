@@ -63,10 +63,9 @@ int main(){
 	std::ifstream fichier("D:/Neo-Fufu/Mes documents/Boulot/Modelisation/Projet2016/data_VRPTW_10_3_2_4.gpr");
 	ConstruireGraphe(&g2, fichier);
 
-	//g.FordBellman2(3);
-
 	cout << g2;
-
+	g2.FordBellman(1);
+	g2.PCC(10);
 
 
 

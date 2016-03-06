@@ -2,6 +2,7 @@
 #include "Sommet.h"
 #include "Arete.h"
 #include <vector>
+#include <list>
 #include "Exception.h"
 #include <string>
 
@@ -97,7 +98,7 @@ public:
 			if (changement){
 				changement = false;
 				for (auto j : aretes){
-					if (sommets.at(j->getFin() - 1)->getPoids() > (sommets.at(j->getOrigine() - 1)->getPoids() + j->getPoids())){
+					if (sommets.at(j->getFin() - 1)->getPoids() >(sommets.at(j->getOrigine() - 1)->getPoids() + j->getPoids())){
 						sommets.at(j->getFin() - 1)->setPoids((sommets.at(j->getOrigine() - 1)->getPoids() + j->getPoids()));
 						sommets.at(j->getFin() - 1)->setPredecesseur(sommets.at(j->getOrigine() - 1)->getName());
 						changement = true;
@@ -120,6 +121,21 @@ public:
 		cout << endl;
 	}
 
+	void PCC(int dest){
+		int k = 0;
+		cout << "Le plus court chemin de la source vers le sommet " << dest << " est : ";
+		list<int> liste;
+		liste.push_front(dest);
+		while (k != (this->getSommets().at(dest-1))->getPredecesseur()){
+			k = this->getSommets().at(dest-1)->getPredecesseur();
+			liste.push_front(k);
+			dest = k;
+		}
+		for (list<int>::iterator it = liste.begin(); it != liste.end()--; it++){
+			cout << *it << " ";
+		}
+		cout << endl;
+	}
 
 private:
 	vector<Arete*> aretes;
