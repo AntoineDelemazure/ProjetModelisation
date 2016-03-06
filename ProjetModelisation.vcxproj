@@ -84,6 +84,7 @@
     <ClInclude Include="Arete.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="Graphe.h" />
+    <ClInclude Include="Lecture.h" />
     <ClInclude Include="Sommet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

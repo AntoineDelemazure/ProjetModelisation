@@ -2,6 +2,7 @@
 #include "Sommet.h"
 #include "Arete.h"
 #include <vector>
+#include <list>
 #include "Exception.h"
 #include <string>
 
@@ -10,75 +11,76 @@ using namespace std;
 class Graphe
 {
 public:
+	/*Constructeur
+	Le graphe est vide à sa création et dois être "rempli" par la suite */
 	Graphe(){
 		vector<Sommet*> sommets;
 		vector<vector<Arete*>*> aretes;
 	};
-	~Graphe(){};
+	virtual ~Graphe(){};
 	
+	//Permet d'ajouter un sommet à la liste des sommets du graphe
 	void ajouterSommet(Sommet* s){
 		sommets.push_back(s);
 	}
 
+	//Permet d'ajouter une arete à la liste des aretes du graphe
 	void ajouterArete(Arete* a){
 		aretes.push_back(a);
 	}
 
+	/*Permet d'ajouter une arete à la liste des aretes du graphe
+	Cette fonction diffère de la précédente, permettant de construire l'arete directement et non avant.*/
+	void ajouterArete(int p, int o, int f){
+		Arete a(p, o, f);
+		aretes.push_back(&a);
+	}
+
+	//Retourne la liste de sommets
 	vector<Sommet*> getSommets(){
 		return sommets;
 	}
+	//retourne la liste d'aretes
 	vector<Arete*> getAretes(){
 		return aretes;
 	}
+	//Retourne la liste des successeurs d'un sommet
+	vector<Sommet*> getSuccesseur(int i){
+		vector<Sommet*> listSucc;
+		for (auto a : aretes){
+			if (a->getOrigine() == i)
+			{
+				listSucc.push_back(sommets.at(a->getFin()-1));
+			}
+		}
+		return listSucc;
+	}
 
-	//Une fonction bien tarabiscoté pour afficher le graphe
+	//Fonction d'impression
 	friend ostream& operator << (ostream& o, Graphe& g){
 		o << "Graphe :\n" << endl;
 		o << "Sommets :" << endl;
 		for (auto s : g.getSommets())
 		{
-			o << "Sommet " << s->getName()
-				<< "; poids : " << s->getPoids() << endl;
+			o << *s;
 		}
 		o << endl << "Aretes :"<< endl;
 		for (auto a : g.getAretes())
 		{
-			o << a->getOrigine() << " vers " << a->getFin()
-				<< "; poids : " << a->getPoids() << endl;
+			o << *a;
 		}
 		o << endl;
 		return o;
 	}
 	
+	/*L'algorithme de Ford-Bellman
+	Le résultat s'afiche sur la console de la facon suivante:
+	Chaque sommet est listé indiquant sont prédécesseur dans l'arbre du plus court chemin,
+	dont la racine est la source.
+	Il indique également le poids du chemin jusqu'à lui.
+	Reconstituer le chemin le plus court depuis un sommet peut être fait en remontant la chaine des prédécesseurs*/
 	void FordBellman(int source){
-		vector<Sommet*>::iterator it;
-		int i = 1;
-		bool changement;
-		string sortie;
-		for (auto it:sommets)
-		{
-			if (source == i){
-				it->setPoids(0);
-				it->setPoids(0);
-			}else{
-				it->setPoids(-1);
-				it->setPoids(2147483647);
-			}
-			i++;
-		}
-		for (int i = 1; i < sommets.size(); i++)
-		{
-			for (auto j : sommets){
-				for (auto k : j->getAretes()){
-					if (k->exist()){
-						
-					}
-				}
-			}
-		}
-	}
-
-	void FordBellman2(int source){
+		//Initialisation
 		for (auto it : sommets)
 		{
 			if (source == it->getName()){
@@ -89,6 +91,7 @@ public:
 				//la valeur max de int en c++ (2147483647) fait planter le calcul (sans fausser le resultat) donc...
 			}
 		}
+		//Relaxation
 		bool changement = true;
 		for (int i = 1; i < sommets.size(); i++)
 		{
@@ -103,6 +106,7 @@ public:
 				}
 			}
 		}
+		//Check cycle poid négatif
 		for (auto k : aretes){
 			if (sommets.at(k->getFin()-1)->getPoids() > (sommets.at(k->getOrigine()-1)->getPoids() + k->getPoids())){
 				cout << "Cycle de poid négatif";
@@ -113,6 +117,22 @@ public:
 		for (auto s : sommets){
 			cout << "Predecesseur du sommet " << s->getName() << " : " << s->getPredecesseur() 
 				<< ". Poids du chemin parcouru depuis la source : " << s->getPoids() << endl;
+		}
+		cout << endl;
+	}
+
+	void PCC(int dest){
+		int k = 0;
+		cout << "Le plus court chemin de la source vers le sommet " << dest << " est : ";
+		list<int> liste;
+		liste.push_front(dest);
+		while (k != (this->getSommets().at(dest-1))->getPredecesseur()){
+			k = this->getSommets().at(dest-1)->getPredecesseur();
+			liste.push_front(k);
+			dest = k;
+		}
+		for (list<int>::iterator it = liste.begin(); it != liste.end()--; it++){
+			cout << *it << " ";
 		}
 		cout << endl;
 	}

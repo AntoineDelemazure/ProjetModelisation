@@ -7,27 +7,23 @@ using namespace std;
 class Arete
 {
 public:
-	//J'aime pas trop cette façon de faire mais tant pis, je suis trop malade pour etre intelligent.
+	//Constructeur
 	Arete(int p, int o, int f){
 		poids = p;
 		origine = o;
 		fin = f;
 	};
 
-	~Arete(){};
-
+	//Fonction d'impression
 	friend ostream& operator << (ostream& o, Arete& a){
-		o << "Poids : " << a.poids << endl;
+
+		o <<"De " << a.origine << " vers "<< a.fin << " Poids : " << a.poids << endl;
 		return o;
 	}
 	
 	//=== GET SET ===
-	int getPoids(){
-		return poids;
-	}
-	int setPoids(int i){
-		poids = i;
-	}
+	int getPoids(){	return poids; }
+	int setPoids(int i){ poids = i;	}
 	int getOrigine(){ return origine; }
 	int getFin(){ return fin;}
 	void setOrigine(int o){ origine = o; }
