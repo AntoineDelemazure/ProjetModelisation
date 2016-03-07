@@ -1,7 +1,7 @@
 #pragma once
 #include "stdlib.h"
 #include <iostream>
-#include "Arete.h"
+#include "Arc.h"
 #include <vector>
 
 class Sommet

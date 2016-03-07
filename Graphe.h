@@ -1,6 +1,6 @@
 #pragma once
 #include "Sommet.h"
-#include "Arete.h"
+#include "Arc.h"
 #include <vector>
 #include <list>
 #include "Exception.h"
@@ -15,7 +15,8 @@ public:
 	Le graphe est vide à sa création et dois être "rempli" par la suite */
 	Graphe(){
 		vector<Sommet*> sommets;
-		vector<vector<Arete*>*> aretes;
+		vector<vector<Arc*>*> arcs;
+		cyclenegatif = false;
 	};
 	virtual ~Graphe(){};
 	
@@ -24,30 +25,30 @@ public:
 		sommets.push_back(s);
 	}
 
-	//Permet d'ajouter une arete à la liste des aretes du graphe
-	void ajouterArete(Arete* a){
-		aretes.push_back(a);
+	//Permet d'ajouter une Arc à la liste des Arcs du graphe
+	void ajouterArc(Arc* a){
+		arcs.push_back(a);
 	}
 
-	/*Permet d'ajouter une arete à la liste des aretes du graphe
-	Cette fonction diffère de la précédente, permettant de construire l'arete directement et non avant.*/
-	void ajouterArete(int p, int o, int f){
-		Arete a(p, o, f);
-		aretes.push_back(&a);
+	/*Permet d'ajouter une Arc à la liste des Arcs du graphe
+	Cette fonction diffère de la précédente, permettant de construire l'Arc directement et non avant.*/
+	void ajouterArc(int p, int o, int f){
+		Arc a(p, o, f);
+		arcs.push_back(&a);
 	}
 
 	//Retourne la liste de sommets
 	vector<Sommet*> getSommets(){
 		return sommets;
 	}
-	//retourne la liste d'aretes
-	vector<Arete*> getAretes(){
-		return aretes;
+	//retourne la liste d'Arcs
+	vector<Arc*> getArcs(){
+		return arcs;
 	}
 	//Retourne la liste des successeurs d'un sommet
 	vector<Sommet*> getSuccesseur(int i){
 		vector<Sommet*> listSucc;
-		for (auto a : aretes){
+		for (auto a : arcs){
 			if (a->getOrigine() == i)
 			{
 				listSucc.push_back(sommets.at(a->getFin()-1));
@@ -64,8 +65,8 @@ public:
 		{
 			o << *s;
 		}
-		o << endl << "Aretes :"<< endl;
-		for (auto a : g.getAretes())
+		o << endl << "Arcs :"<< endl;
+		for (auto a : g.getArcs())
 		{
 			o << *a;
 		}
@@ -92,12 +93,13 @@ public:
 			}
 		}
 		//Relaxation
+		cyclenegatif = false;
 		bool changement = true;
 		for (int i = 1; i < sommets.size(); i++)
 		{
 			if (changement){
 				changement = false;
-				for (auto j : aretes){
+				for (auto j : arcs){
 					if (sommets.at(j->getFin() - 1)->getPoids() >(sommets.at(j->getOrigine() - 1)->getPoids() + j->getPoids())){
 						sommets.at(j->getFin() - 1)->setPoids((sommets.at(j->getOrigine() - 1)->getPoids() + j->getPoids()));
 						sommets.at(j->getFin() - 1)->setPredecesseur(sommets.at(j->getOrigine() - 1)->getName());
@@ -107,37 +109,57 @@ public:
 			}
 		}
 		//Check cycle poid négatif
-		for (auto k : aretes){
-			if (sommets.at(k->getFin()-1)->getPoids() > (sommets.at(k->getOrigine()-1)->getPoids() + k->getPoids())){
-				cout << "Cycle de poid négatif";
+		if (changement){
+			for (auto k : arcs){
+				if (sommets.at(k->getFin() - 1)->getPoids() > (sommets.at(k->getOrigine() - 1)->getPoids() + k->getPoids())){
+					cout << "Cycle de poid négatif" << endl;
+					cyclenegatif = true;
+					break;
+				}
 			}
-
 		}
-		cout << "PCC :" << endl;
-		for (auto s : sommets){
-			cout << "Predecesseur du sommet " << s->getName() << " : " << s->getPredecesseur() 
-				<< ". Poids du chemin parcouru depuis la source : " << s->getPoids() << endl;
+		if (!cyclenegatif){
+			cout << "PCC :" << endl;
+			for (auto s : sommets){
+				cout << "Predecesseur du sommet " << s->getName() << " : " << s->getPredecesseur()
+					<< ". Poids du chemin parcouru depuis la source : " << s->getPoids() << endl;
+			}
+			cout << endl;
 		}
-		cout << endl;
 	}
 
+	/*Un fonction pour imprimer un plus court chemin en particulier depuis la racine*/
 	void PCC(int dest){
-		int k = 0;
-		cout << "Le plus court chemin de la source vers le sommet " << dest << " est : ";
-		list<int> liste;
-		liste.push_front(dest);
-		while (k != (this->getSommets().at(dest-1))->getPredecesseur()){
-			k = this->getSommets().at(dest-1)->getPredecesseur();
-			liste.push_front(k);
-			dest = k;
+		if (!cyclenegatif)
+		{
+			int k = 0;
+			int l = dest;
+			int p = (this->getSommets().at(	l - 1))->getPoids();
+			list<int> liste;
+			liste.push_front(dest);
+			while (k != (this->getSommets().at(l- 1))->getPredecesseur() &&
+				l != (this->getSommets().at(l - 1))->getPredecesseur()){
+				k = this->getSommets().at(l - 1)->getPredecesseur();
+				liste.push_front(k);
+				l = k;
+			}
+			//Ecriture du résultat
+			if (liste.size() == 1)
+			{
+				cout << "Le sommet "<< dest <<" n'est pas relie a la source (ou est la source)" << endl;
+			}else{
+				cout << "Le plus court chemin de la source vers le sommet " << dest << " est : ";
+				for (list<int>::iterator it = liste.begin(); it != liste.end()--; it++){
+					cout << *it << " ";
+				}
+				cout << endl <<
+					"Le poids du chemin s'eleve a : " << p << endl;
+			}
 		}
-		for (list<int>::iterator it = liste.begin(); it != liste.end()--; it++){
-			cout << *it << " ";
-		}
-		cout << endl;
 	}
 
 private:
-	vector<Arete*> aretes;
+	vector<Arc*> arcs;
 	vector<Sommet*> sommets;
+	bool cyclenegatif;
 };

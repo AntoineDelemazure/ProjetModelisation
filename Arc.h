@@ -4,18 +4,18 @@
 
 using namespace std;
 
-class Arete
+class Arc
 {
 public:
 	//Constructeur
-	Arete(int p, int o, int f){
+	Arc(int p, int o, int f){
 		poids = p;
 		origine = o;
 		fin = f;
 	};
 
 	//Fonction d'impression
-	friend ostream& operator << (ostream& o, Arete& a){
+	friend ostream& operator << (ostream& o, Arc& a){
 
 		o <<"De " << a.origine << " vers "<< a.fin << " Poids : " << a.poids << endl;
 		return o;

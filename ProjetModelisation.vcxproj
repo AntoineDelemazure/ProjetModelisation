@@ -81,7 +81,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Arete.h" />
+    <ClInclude Include="Arc.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="Graphe.h" />
     <ClInclude Include="Lecture.h" />
